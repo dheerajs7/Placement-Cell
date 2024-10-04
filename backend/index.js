@@ -4,6 +4,7 @@ import cookieParser from 'cookie-parser';
 import cors from "cors"
 import connectDb from './utils/db.js';
 import adminRouter from './routes/admin.routes.js';
+import { studentRouter } from './routes/student.routes.js';
 
 
 dotenv.config({
@@ -22,7 +23,8 @@ app.use(cors({
  
  app.use(cookieParser())
  
- app.use('/api',adminRouter)
+ app.use('/api/admin',adminRouter)
+ app.use('/api',studentRouter)
 
 
 const PORT = process.env.PORT 
