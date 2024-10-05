@@ -30,9 +30,9 @@ const studentSchema = new mongoose.Schema({
    { type: mongoose.Schema.Types.ObjectId,
       ref: 'Interview' 
    }],
- results: [
+ result: [
    { type: mongoose.Schema.Types.ObjectId,
-    ref: 'Result' 
+    ref: 'Interview' 
    }]
 })
 

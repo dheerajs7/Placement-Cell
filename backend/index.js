@@ -5,6 +5,7 @@ import cors from "cors"
 import connectDb from './utils/db.js';
 import adminRouter from './routes/admin.routes.js';
 import { studentRouter } from './routes/student.routes.js';
+import { interviewRouter } from './routes/interview.routes.js';
 
 
 dotenv.config({
@@ -25,6 +26,7 @@ app.use(cors({
  
  app.use('/api/admin',adminRouter)
  app.use('/api',studentRouter)
+ app.use('/api',interviewRouter)
 
 
 const PORT = process.env.PORT 
