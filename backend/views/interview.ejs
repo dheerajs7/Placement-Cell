@@ -1,0 +1,65 @@
+<div class="container mt-5">
+    <h2 class="text-center">Interview List</h2>
+
+    <!-- Wrap the table in a div and set a max-width -->
+    <div class="table-responsive" style="max-width: 1000px; margin: 0 auto;">
+        <div class="d-flex justify-content-end mb-3">
+            <a href="/interview/allocate" class="btn btn-primary" style="padding: 10px 20px; font-weight: bold;">Allocate Interview</a>
+        </div>
+       
+        <table class="table table-bordered table-striped mt-4" style="width: 100%;">
+            <thead>
+                <tr>
+                    <th style="text-align: center;">Company </th>
+                    <th style="text-align: center;">Student</th> 
+                    <th style="text-align: center;">Email</th> <!-- Align header content to the right -->
+                    <th style="text-align: center;">Date</th>
+                    <th style="text-align: center;">Result</th>
+                    <th style="text-align: center;">Action</th>  <!-- Align header content to the right -->
+                    <!-- <th style="text-align: center;">Actions</th> Align header content to the right -->
+                </tr>
+            </thead>
+            <tbody>
+                <% if (interview.length > 0) { %>
+                    <% interview.forEach(item => { %>
+                        <% item.students.forEach(student => { %>
+                            <tr>
+                                <!-- Company Name should be shown only once for each interview, so we display it only for the first student -->
+                                <td style="text-align: center;"><%= item.companyName %></td>
+                
+                                <!-- Student details -->
+                                <td style="text-align: center;"><%= student.name %></td>
+                                <td style="text-align: center;"><%= student.email %></td> <!-- Display the student's email -->
+                                
+                
+                                <!-- Interview date, displayed only once per interview -->
+                                <td style="text-align: center;"><%= new Date(item.date).toLocaleDateString() %></td>
+                
+                                <!-- Result (if specific to the student, otherwise keep it per interview) -->
+                                <td style="text-align: center;">
+                                    <form action="/interview/update-interview-result/<%= item._id %>/<%= student._id %>" method="POST">
+                                        <select name="result" class="form-control" required>
+                                            <option value="PASS" <%= item.result === 'PASS' ? 'selected' : '' %>>PASS</option>
+                                            <option value="FAIL" <%= item.result === 'FAIL' ? 'selected' : '' %>>FAIL</option>
+                                            <option value="On Hold" <%= item.result === 'On Hold' ? 'selected' : '' %>>On Hold</option>
+                                            <option value="Didn’t Attempt" <%= item.result === 'Didn’t Attempt' ? 'selected' : '' %>>Didn’t Attempt</option>
+                                        </select>
+
+                                 </td>
+                                <td style="text-align: center;">
+                                    <button type="submit" class="btn btn-success btn-sm">Update</button>
+                                    </form>
+                                </td>
+                <!-- Modify this if the result is student-specific -->
+                            </tr>
+                        <% }) %>
+                    <% }) %>
+                <% } else { %>
+                    <tr>
+                        <td colspan="3" class="text-center">No interviews available</td>
+                    </tr>
+                <% } %>
+            </tbody>
+        </table>
+    </div>
+</div>

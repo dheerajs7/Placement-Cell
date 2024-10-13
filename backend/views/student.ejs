@@ -1,0 +1,54 @@
+<!-- Include the navbar if necessary -->
+
+<div class="container mt-5">
+    <h2 class="text-center">Add New Student</h2>
+    
+    <form action="/api/addstudent" method="POST" class="mt-4">
+        <div class="form-group">
+            <label for="name">Student Name</label>
+            <input type="text" class="form-control" id="name" name="name" placeholder="Enter student's name" required>
+        </div>
+        
+        <div class="form-group">
+            <label for="email">Email</label>
+            <input type="email" class="form-control" id="email" name="email" placeholder="Enter student's email" required>
+        </div>
+        
+        <div class="form-group">
+            <label for="college">College</label>
+            <input type="text" class="form-control" id="college" name="college" placeholder="Enter student's college" required>
+        </div>
+        
+        <div class="form-group">
+            <label for="batch">Batch</label>
+            <input type="text" class="form-control" id="batch" name="batch" placeholder="Enter batch year" required>
+        </div>
+        <div class="form-group">
+            <label for="placement_status">Placement Status</label>
+            <select class="form-control" id="placement_status" name="placement_status" required>
+                <option value="placed">Placed</option>
+                <option value="not_placed">Not Placed</option> <!-- Ensure this value is correct -->
+            </select>
+        </div>
+        
+        <div class="form-group">
+            <label for="courseScores[dsaFinalScore]">DSA Final Score</label>
+            <input type="number" class="form-control" id="dsaFinalScore" name="courseScores[dsaFinalScore]" placeholder="Enter DSA final score" required>
+        </div>
+
+        <!-- Web Development Score -->
+        <div class="form-group">
+            <label for="courseScores[webDFinalScore]">Web Development Final Score</label>
+            <input type="number" class="form-control" id="webDFinalScore" name="courseScores[webDFinalScore]" placeholder="Enter Web Development final score" required>
+        </div>
+
+        <!-- React Score -->
+        <div class="form-group">
+            <label for="courseScores[reactFinalScore]">React Final Score</label>
+            <input type="number" class="form-control" id="reactFinalScore" name="courseScores[reactFinalScore]" placeholder="Enter React final score" required>
+        </div>
+
+
+        <button type="submit" class="btn btn-success mt-4">Add Student</button>
+    </form>
+</div>

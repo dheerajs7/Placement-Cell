@@ -6,6 +6,10 @@ import connectDb from './utils/db.js';
 import adminRouter from './routes/admin.routes.js';
 import { studentRouter } from './routes/student.routes.js';
 import { interviewRouter } from './routes/interview.routes.js';
+import ejsLayouts from 'express-ejs-layouts'
+import methodOverride from 'method-override';
+
+
 
 
 dotenv.config({
@@ -19,14 +23,23 @@ app.use(cors({
     credentials: true
 }))
 
+app.use(express.static('public'));
  app.use(express.json());
  app.use(express.urlencoded({extended:true}))
- 
+   
+ app.set('view engine', 'ejs');
+ app.set('views','./views');
+
+ app.use(ejsLayouts);
+ app.set('layout', 'layout'); 
+ // Serve static files from 'public' folder
+ app.use(methodOverride('_method'));
+
  app.use(cookieParser())
  
- app.use('/api/admin',adminRouter)
+ app.use('/',adminRouter)
  app.use('/api',studentRouter)
- app.use('/api',interviewRouter)
+ app.use('/interview',interviewRouter)
 
 
 const PORT = process.env.PORT 

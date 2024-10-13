@@ -21,7 +21,7 @@ const addStudent = async(req,res)=>{
     })
 
     await student.save();
-    return res.status(201).json({student, message:"Student addded successfully"});
+    res.status(201).render('dashboard', {student,showNavbar: true})
    }catch(error){
     return res.status(500).json({message:error.message});
    }
@@ -29,7 +29,7 @@ const addStudent = async(req,res)=>{
 
 const getAllStudent = async(req,res)=>{
 try { 
-    const students = await  Student.find({}).select('name batch');
+    const students = await  Student.find()
     
     if (!students) {
         return res.status(404).json({
@@ -37,10 +37,8 @@ try {
         })
     }
 
-    return res.status(200).json({
-        students,
+    res.status(201).render('dashboard', {students,showNavbar: true});
         
-    })
 }catch (error) {
     return res.status(500).json({message:error.message});
     }
@@ -55,12 +53,47 @@ const getStudentDetails = async(req,res)=>{
                 message:"Error getting details"
             })
         }
-        return res.status(200).json({student});
+        res.status(201).render('dashboard');
 
 }catch(error){
    return res.status(404).json(err.message)
 }
 }
 
+const updatePlacementStatus = async (req, res) => {
+    try {
+        const studentId = req.params.id;
+        const { placement_status } = req.body;
 
-export{addStudent,getAllStudent,getStudentDetails}
+        // Find the student by ID and update the placement status
+        await Student.findByIdAndUpdate(studentId, { placement_status });
+
+        return res.redirect('/dashboard');
+    } catch (error) {
+        console.error(error);
+        return res.status(500).json({ message: 'Error updating placement status' });
+    }
+};
+
+const deleteStudent = async (req, res) => {
+    try {
+        const studentId = req.params.id; // Get the student ID from the request parameters
+
+        // Find the student by ID and remove it
+        const deletedStudent = await Student.findByIdAndDelete(studentId);
+
+        if (!deletedStudent) {
+            return res.status(404).json({ message: 'Student not found' });
+        }
+
+        // Redirect to the student list after successful deletion
+        res.redirect('/dashboard');
+    } catch (error) {
+        console.error(error);
+        res.status(500).send('Server error while deleting student');
+    }
+};
+
+
+
+export{addStudent,getAllStudent,getStudentDetails,updatePlacementStatus,deleteStudent}

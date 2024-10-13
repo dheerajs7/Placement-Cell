@@ -1,6 +1,8 @@
 import { Admin } from "../model/admin.model.js";
 import bcrypt from "bcrypt"
 import jwt from "jsonwebtoken";
+import { Student } from "../model/student.model.js";
+
 // import { asyncHandler } from "../utils/asyncHandler.js";
 
 
@@ -15,15 +17,13 @@ const signUpAdmin = async(req,res)=>{
     if (!isEmployeeEmail(email)) {
         res.status(400).json(
             { message: "Not authorised to signup"}
-         )
+         )  
       }
    
     const ifAdminExist = await Admin.findOne({email})
 
     if (ifAdminExist) {
-       return res.status(400).json(
-           { message: "Admin already exist"}
-        )
+        return res.redirect('/signin');
     }
     if (password.length < 8) {
        return res.status(401).json(
@@ -41,7 +41,7 @@ const signUpAdmin = async(req,res)=>{
 
      await admin.save()
 
-     return res.status(201).json({admin, message:"User registered successfully"})
+     res.redirect('/signin'); 
 }
 
 const loginAdmin = async(req,res)=>{
@@ -66,12 +66,16 @@ try{
     const token = jwt.sign({id:validAdmin._id},process.env.JWT_SECRET)
     
      
-    res.cookie("access_token",token,{httpOnly:true}).status(201).json({message:"User Logged in Successfully",validAdmin})
+    res.cookie("access_token",token,{httpOnly:true})
+    
+   const students = await Student.find();
+
+    res.status(201).render('dashboard',
+        {message:"User Logged in Successfully",validAdmin, students,showNavbar: true})
 }
 catch(err){
-    res.status(401).json({
-        message:"Error logging in"
-    })
+    return res.status(401).render('signin', { message: "Error logging in" });
+    
 }
 }
 
