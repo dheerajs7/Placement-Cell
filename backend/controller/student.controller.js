@@ -1,7 +1,7 @@
 import { Student } from "../model/student.model.js";
 
 
-
+// Add new student 
 const addStudent = async(req,res)=>{
    try{
     const{name,email,batch,college,placement_status,courseScores}=req.body;
@@ -11,7 +11,7 @@ const addStudent = async(req,res)=>{
         return res.status(400).json({message:"Student already added"})
     }
 
-    const student = new Student({
+    const students = new Student({
         name,
         email,
         batch,
@@ -20,13 +20,14 @@ const addStudent = async(req,res)=>{
         courseScores
     })
 
-    await student.save();
-    res.status(201).render('dashboard', {student,showNavbar: true})
+    await students.save();
+    return res.redirect('/dashboard');
    }catch(error){
     return res.status(500).json({message:error.message});
    }
 }
 
+//Get all the student to show them
 const getAllStudent = async(req,res)=>{
 try { 
     const students = await  Student.find()
@@ -44,22 +45,7 @@ try {
     }
 }
 
-const getStudentDetails = async(req,res)=>{
-    try{
-        const id = req.params.id;
-        const student = await Student.findById(id).select('name email batch college placement_status courseScores');
-        if (!student) {
-            return res.status(404).json({
-                message:"Error getting details"
-            })
-        }
-        res.status(201).render('dashboard');
-
-}catch(error){
-   return res.status(404).json(err.message)
-}
-}
-
+//update the placement status of students
 const updatePlacementStatus = async (req, res) => {
     try {
         const studentId = req.params.id;
@@ -75,6 +61,7 @@ const updatePlacementStatus = async (req, res) => {
     }
 };
 
+//Delete  existing student 
 const deleteStudent = async (req, res) => {
     try {
         const studentId = req.params.id; // Get the student ID from the request parameters
@@ -96,4 +83,4 @@ const deleteStudent = async (req, res) => {
 
 
 
-export{addStudent,getAllStudent,getStudentDetails,updatePlacementStatus,deleteStudent}
+export{addStudent,getAllStudent,updatePlacementStatus,deleteStudent}

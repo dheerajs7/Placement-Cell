@@ -7,14 +7,23 @@
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
 </head>
 <body>
-    <div class="container mt-5">
+   <div class="container  pl-5 pr-5" style="width:30%;">
+    <% if (message) { %>
+        <div class="alert alert-danger">
+            <%= message %>
+        </div>
+    <% } %>
+</div>
+    <div class="container mt-4 pt-2 pb-5 pl-5 pr-5 " style="width: 30%; margin: 0 auto; background-color:lightgray; border-radius:20px">
         <h2 class="text-center">Admin Login</h2>
+        
+    
 
         <!-- Display error messages if there are any -->
       
 
         <form action="/signin" method="POST">
-            <div class="form-group">
+            <div class="form-group pt-3">
                 <label for="email">Email</label>
                 <input type="email" name="email" id="email" class="form-control" placeholder="Enter your email" required>
             </div>
@@ -22,7 +31,10 @@
                 <label for="password">Password</label>
                 <input type="password" name="password" id="password" class="form-control" placeholder="Enter your password" required>
             </div>
-            <button type="submit" class="btn btn-primary">Login</button>
+            <div class="d-flex justify-content-center mt-3">
+                <button type="submit" class="btn btn-primary">Login</button>
+            </div>
+    
         </form>
 
         <div class="mt-3">

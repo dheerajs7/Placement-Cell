@@ -1,3 +1,5 @@
+//Admin(Employee) Model Schema
+
 import mongoose from "mongoose";
 
 const adminSchema = new mongoose.Schema({

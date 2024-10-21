@@ -7,10 +7,10 @@ const addInterview = async (req, res) => {
         const { studentName, companyName, interviewDate } = req.body;
 
         // Find the student by their name
-        const student = await Student.findOne({ name: studentName });
+        const students = await Student.findOne({ name: studentName });
 
         // If student is not found, return an error
-        if (!student) {
+        if (!students) {
             return res.status(404).json({ message: "Student not found" });
         }
 
@@ -21,26 +21,23 @@ const addInterview = async (req, res) => {
         }
 
         // Create a new Interview
-        const newInterview = new Interview({
+        const interview = new Interview({
             companyName,
             date: parsedDate,
-            students: [student._id], // Add the student's ID
+            students: [students._id], // Add the student's ID
         });
 
         // Save the interview to the database
-        await newInterview.save();
+        await interview.save();
 
         // Add the interview to the student's `interviews` array
-        student.interviews.push(newInterview._id);
+        students.interviews.push(interview._id);
 
         // Save the updated student document
-        await student.save();
+        await students.save();
 
-        res.render('interview', {
-            interview,
-            students,
-            showNavbar: true
-        });
+        return res.redirect('/getinterview');
+      
     } catch (error) {
         console.error("Error allocating interview:", error);
         res.status(500).json({ message: error.message });
@@ -103,15 +100,9 @@ const allocateInterview = async (req, res) => {
 
 const allocateInterviewPage = async (req, res) => {
     try {
-        // const interviewId = req.params.id;
-        // const interview = await Interview.findById(interviewId); // Fetch interview by ID
         const students = await Student.find(); // Fetch all students
 
-        // if (!interview) {
-        //     return res.status(404).json({ message: "Interview not found" });
-        // }
-
-        // Render the page with interview and students data
+        
         res.render('allocate', {
             // interview,
             students,
@@ -155,35 +146,21 @@ const updateInterviewResult = async (req, res) => {
     }
 };
 
-const results = async(req,res)=>{
-    try{
-      
-        const {result} = req.body;
-        const interviewId = req.params.id;
+const deleteInteriew = async (req, res) => {
+    const { interviewId, studentId } = req.params;
+    console.log(interviewId,studentId)
+    try {
+        // Find the interview and remove the student
+        await Interview.findByIdAndUpdate(interviewId, {
+            $pull: { students: studentId }
+        });
 
-        const company = await Interview.findOne({interviewId})
-
-        if (!company) {
-            return res.status(404).json({
-                message:"Company Unavailble"
-            })
-        }
-
-        company.result = result;
-
-        await company.save();
-
-        return res.status(201).json({
-            company
-        })
-
-      
-
-        // const studentId = req.body.studentI
-         }catch(error){
-        return res.status(500).json({ message: error.message });
+        res.redirect('/dashboard'); // Redirect after deletion
+    } catch (err) {
+        console.log(err);
+        res.status(500).send('Error deleting interview');
     }
 }
 
 
-export {addInterview,getInterview,allocateInterview,allocateInterviewPage,updateInterviewResult}
+export {addInterview,getInterview,allocateInterview,allocateInterviewPage,updateInterviewResult,deleteInteriew}

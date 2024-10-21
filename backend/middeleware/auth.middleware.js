@@ -1,5 +1,7 @@
 import jwt from "jsonwebtoken"
 
+
+//Middeleware function ot authenticate valid  user
 const isAuthenticate = async(req,res,next)=>{
     try {
         const token = req.cookies.access_token

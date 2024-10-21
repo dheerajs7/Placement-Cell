@@ -1,3 +1,5 @@
+//Student model schema
+
 import mongoose from "mongoose";
 
 const studentSchema = new mongoose.Schema({
@@ -35,7 +37,5 @@ const studentSchema = new mongoose.Schema({
     ref: 'Interview' 
    }]
 })
-
-
 
 export const Student = mongoose.model("Student",studentSchema)

@@ -1,3 +1,5 @@
+//Interview Model schema
+
 import mongoose from "mongoose";
 
 const interviewSchema = new mongoose.Schema({
