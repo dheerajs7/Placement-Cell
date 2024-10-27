@@ -8,7 +8,7 @@
         </div>
        
         <table class="table table-bordered table-striped mt-4" style="width: 100%;">
-            <thead>
+            <thead class="thead-light" >
                 <tr>
                     <th style="text-align: center;">Company </th>
                     <th style="text-align: center;">Student</th> 
@@ -37,8 +37,8 @@
                 
                                 <!-- Result (if specific to the student, otherwise keep it per interview) -->
                                 <td style="text-align: center;">
-                                    <form action="/interview/update-interview-result/<%= item._id %>/<%= student._id %>" method="POST">
-                                        <select name="result" class="form-control" required>
+                                    <form action="/interview/update-interview-result/<%= item._id %>/<%= student._id %>" method="POST" id="result-form-<%= item._id %>-<%= student._id %>">
+                                        <select name="result" class="form-control" required onchange="document.getElementById('result-form-<%= item._id %>-<%= student._id %>').submit();">
                                             <option value="PASS" <%= item.result === 'PASS' ? 'selected' : '' %>>PASS</option>
                                             <option value="FAIL" <%= item.result === 'FAIL' ? 'selected' : '' %>>FAIL</option>
                                             <option value="On Hold" <%= item.result === 'On Hold' ? 'selected' : '' %>>On Hold</option>
@@ -47,7 +47,7 @@
 
                                  </td>
                                 <td style="text-align: center;">
-                                    <button type="submit" class="btn btn-success btn-sm">Update</button>
+                                    <!-- <button type="submit" class="btn btn-success btn-sm">Update</button> -->
                                     </form>
                                     <form action="/interview/delete/<%= item._id %>/<%= student._id%>" method="POST" style="display: inline;">
                                         <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('Are you sure you want to delete this student from the interview?')">Delete</button>
